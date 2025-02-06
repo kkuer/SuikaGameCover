@@ -14,7 +14,6 @@ public class Dropper : MonoBehaviour
 
     public List<GameObject> droppableFruits;
 
-    //get random fruit
     public GameObject getRandomFruit()
     {
         //select random index
@@ -62,12 +61,11 @@ public class Dropper : MonoBehaviour
             //enable fruit rb
             Rigidbody2D rb = fruit.GetComponent<Rigidbody2D>();
             rb.simulated = true;
+            rb.angularVelocity = Random.Range(-90f, 90f);
 
             //select new fruit
             SpawnFruit();
         }
-
-
     }
 
     private void SpawnFruit()

@@ -292,6 +292,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 177764546}
+  - component: {fileID: 177764547}
   - component: {fileID: 177764545}
   m_Layer: 0
   m_Name: GameManager
@@ -327,6 +328,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &177764547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177764544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 978a24f967278b44282c7d52c5db86bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score: 0
+  scoreData: {fileID: 11400000, guid: cd7c46b49ca83fe48ac8474349d595f6, type: 2}
 --- !u!1 &185907635
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,8 +443,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a709d375103f4d409eec8d5654c201d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minX: -2
-  maxX: 2
+  minX: -2.2
+  maxX: 2.2
   fruitSpawnPos: {fileID: 485352915}
   droppableFruits:
   - {fileID: 9218761961914450021, guid: d2230091bb53f0a4488d0ea29106b2ac, type: 3}
