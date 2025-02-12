@@ -1,25 +1,37 @@
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    //set gamemanager instance so other scripts can talk to it
+    public static GameManager gameManagerInstance {  get; private set; }
+
+    //numerics
     public int score = 0;
 
-    public Scoring scoreData;
+    //UI
+    public TMP_Text scoreText;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
-        
+        if (gameManagerInstance == null)
+        {
+            gameManagerInstance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        scoreText.text = score.ToString();
     }
 
     public void addScore(int scoreToAdd)
     {
+        //add new score amount to current score
         score += scoreToAdd;
     }
 }

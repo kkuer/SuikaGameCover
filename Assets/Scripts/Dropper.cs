@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class Dropper : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class Dropper : MonoBehaviour
 
     //fruits
     public Transform fruitSpawnPos;
+
+    public float fruitDelayInSeconds;
 
     private GameObject currentFruit;
 
@@ -46,6 +49,7 @@ public class Dropper : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
+            //drop fruit
             DropFruit(currentFruit);
         }
     }
@@ -63,7 +67,7 @@ public class Dropper : MonoBehaviour
             rb.simulated = true;
             rb.angularVelocity = Random.Range(-90f, 90f);
 
-            //select new fruit
+            //select a new fruit
             SpawnFruit();
         }
     }
@@ -77,4 +81,11 @@ public class Dropper : MonoBehaviour
         Rigidbody2D rb = currentFruit.GetComponent<Rigidbody2D>();
         rb.simulated = false;
     }
+
+    //public IEnumerator spawnNewWithDelay()
+    //{
+        //wait a certain amount of seconds then spawn a new fruit
+    //    yield return new WaitForSeconds(fruitDelayInSeconds);
+    //    SpawnFruit();
+    //}
 }

@@ -167,3 +167,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 2
   scoreToSend: 6
+  nextTier: {fileID: 9218761961914450021, guid: 4cbdac490e859c745b6c4cdd0d47f101, type: 3}
