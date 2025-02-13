@@ -168,3 +168,4 @@ MonoBehaviour:
   type: 0
   scoreToSend: 1
   nextTier: {fileID: 9218761961914450021, guid: 414f8569657a7104d8fcb83c77392f1b, type: 3}
+  isActive: 0

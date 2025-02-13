@@ -1,6 +1,6 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Dropper : MonoBehaviour
 {
@@ -10,10 +10,12 @@ public class Dropper : MonoBehaviour
 
     //fruits
     public Transform fruitSpawnPos;
+    public Transform nextFruitPos;
 
-    public float fruitDelayInSeconds;
+    [SerializeField] private float spawnDelay;
 
     private GameObject currentFruit;
+    private GameObject nextFruit;
 
     public List<GameObject> droppableFruits;
 
@@ -28,33 +30,43 @@ public class Dropper : MonoBehaviour
 
     void Start()
     {
-        SpawnFruit();
+        //load next fruit, move it to dropper position, then spawn a new next fruit
+        loadNextFruit();
+        spawnFruit();
+        loadNextFruit();
     }
 
     void Update()
     {
-        //get mouse pos
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        //clamp x parameters
-        float clampedX = Mathf.Clamp(mousePosition.x, minX, maxX);
-
-        //move dropper
-        transform.position = new Vector3(clampedX, transform.position.y, transform.position.z);
-
-        if (currentFruit)
+        if (GameManager.gameManagerInstance != null)
         {
-            currentFruit.gameObject.transform.position = fruitSpawnPos.position;
-        }
+            //only run logic if game is active
+            if (GameManager.gameManagerInstance.gameActive == true)
+            {
+                //get mouse pos
+                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            //drop fruit
-            DropFruit(currentFruit);
+                //clamp x parameters
+                float clampedX = Mathf.Clamp(mousePosition.x, minX, maxX);
+
+                //move dropper
+                transform.position = new Vector3(clampedX, transform.position.y, transform.position.z);
+            }
+
+            if (currentFruit)
+            {
+                currentFruit.gameObject.transform.position = fruitSpawnPos.position;
+            }
+
+            if (Input.GetMouseButtonDown(0) && currentFruit != null)
+            {
+                //drop fruit
+                StartCoroutine(dropFruit(currentFruit));
+            }
         }
     }
 
-    private void DropFruit(GameObject fruit)
+    IEnumerator dropFruit(GameObject fruit)
     {
         //find current fruit
         fruit = currentFruit.gameObject;
@@ -62,30 +74,38 @@ public class Dropper : MonoBehaviour
         //check fruit spawn
         if (fruit != null)
         {
+            Debug.Log("pass1");
             //enable fruit rb
             Rigidbody2D rb = fruit.GetComponent<Rigidbody2D>();
+            Debug.Log(rb);
             rb.simulated = true;
+            Debug.Log(rb.simulated);
             rb.angularVelocity = Random.Range(-90f, 90f);
+            Debug.Log(rb.angularVelocity);
 
-            //select a new fruit
-            SpawnFruit();
+            //set current fruit to null
+            currentFruit = null;
+
+            //select a new fruit with buffer delay
+            yield return new WaitForSeconds(spawnDelay);
+            spawnFruit();
+            loadNextFruit();
         }
     }
 
-    private void SpawnFruit()
+    private void spawnFruit()
     {
-        //get new fruit and instantiate
-        currentFruit = Instantiate(getRandomFruit(), fruitSpawnPos.position, Quaternion.identity);
-
-        //turn off fruit rb
-        Rigidbody2D rb = currentFruit.GetComponent<Rigidbody2D>();
-        rb.simulated = false;
+        //reassign next fruit to get ready to drop
+        currentFruit = nextFruit;
     }
 
-    //public IEnumerator spawnNewWithDelay()
-    //{
-        //wait a certain amount of seconds then spawn a new fruit
-    //    yield return new WaitForSeconds(fruitDelayInSeconds);
-    //    SpawnFruit();
-    //}
+    private void loadNextFruit()
+    {
+        //get new fruit and instantiate
+        nextFruit = Instantiate(getRandomFruit(), nextFruitPos.position, Quaternion.identity);
+
+        //turn off fruit rb
+        Rigidbody2D rb = nextFruit.GetComponent<Rigidbody2D>();
+        rb.simulated = false;
+    }
 }

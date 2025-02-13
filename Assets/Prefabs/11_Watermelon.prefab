@@ -167,3 +167,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 10
   scoreToSend: 66
+  nextTier: {fileID: 0}
+  isActive: 0

@@ -17,16 +17,26 @@ public class Fruit : MonoBehaviour
         Watermelon
     }
 
+    //fruit type reference
     public fruitType type;
 
+    //score reference
     public int scoreToSend;
 
+    //net tier reference
     public GameObject nextTier;
 
+    //boolean for checking collision
     private bool hasCollided = false;
+
+    //boolean for ignoring game fail trigger
+    public bool isActive = false;
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        //set active state to true (allow for lose trigger to reigster fruit)
+        isActive = true;
+
         //check if a collision has been registered
         if (!hasCollided)
         {
@@ -37,6 +47,18 @@ public class Fruit : MonoBehaviour
             {
                 //create new fruit
                 createNewFruit(other);
+            }
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D bounds)
+    {
+        //check if fruit is active and not just being dropped
+        if (isActive == true)
+        {
+            //check for gamemanager instance and invoke lose condition
+            if (GameManager.gameManagerInstance != null)
+            {
+                GameManager.gameManagerInstance.gameActive = false;
             }
         }
     }
@@ -53,8 +75,6 @@ public class Fruit : MonoBehaviour
         //check for fruit match, if fruit is already max tier
         if (thisFruit.type == otherFruit.type && thisFruit.type != fruitType.Watermelon)
         {
-            Debug.Log("collided with the same fruit");
-
             //cancel duplicate collisions
             hasCollided = true;
             otherFruit.hasCollided = true;
@@ -75,10 +95,6 @@ public class Fruit : MonoBehaviour
             {
                 GameManager.gameManagerInstance.addScore(newScore);
             }
-        }
-        else
-        {
-            Debug.Log("collided with a different fruit");
         }
     }
 }
