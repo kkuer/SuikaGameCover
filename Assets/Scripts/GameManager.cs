@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
 
     //UI
     public TMP_Text scoreText;
+    public TMP_Text finalScoreText;
+    public GameObject endScreen;
 
     //sound effects
     public AudioSource SFX_POP;
@@ -39,6 +41,8 @@ public class GameManager : MonoBehaviour
         if (!gameActive)
         {
             Time.timeScale = 0f;
+            endScreen.SetActive(true);
+            finalScoreText.text = score.ToString();
         }
     }
 
